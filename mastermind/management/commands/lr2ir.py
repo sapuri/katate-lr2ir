@@ -1,26 +1,28 @@
 import csv
+import codecs
 
 import requests
 from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
 
 class Command(BaseCommand):
-    help = 'コマンド作成テスト'
+    help = '楽曲ごとのプレイデータを取得、CSV出力'
 
     def handle(self, *args, **options):
         file_path = './csv/airgod.csv'
-        #self.init_csv(file_path)
+        self.init_csv(file_path)
 
-        player_id_list = ['9829']
-        players = 195
+        player_id_list = ['132784', '54253', '60153']
+        players = 1958
         pages = (players // 100) + 1
+        bms_id = 97798
 
-        bms_id = 241245
         for i in range(1, pages + 1):
             print(f'Page: {i}')
             target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&page={i}&bmsid={bms_id}'
             score_list = self.scrape(target_url, player_id_list)
             print(score_list)
+            self.export2csv(file_path, score_list)
 
     @staticmethod
     def scrape(url: str, player_id_list: list) -> list:
@@ -31,7 +33,7 @@ class Command(BaseCommand):
         :return: score list
         """
         resp = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-        soup = BeautifulSoup(resp.text, 'lxml')
+        soup = BeautifulSoup(resp.content, 'lxml')
 
         table = soup.find_all('table')[3]
         rows = table.find_all('tr')
@@ -45,11 +47,10 @@ class Command(BaseCommand):
                 if player_id not in player_id_list:
                     continue
             for cell in row.find_all(['td', 'th'], attrs={'class': ''}):
-                if cell.get_text():
-                    score_data.append(cell.get_text())
+                score_data.append(cell.get_text())
 
         #抽出したスコアデータを分割、整形
-        score_list = [score_data[i:i+19] for i in range(0, len(score_data), 19)]
+        score_list = [score_data[i:i+17] for i in range(0, len(score_data), 17)]
         score_list.pop(0)
 
         return score_list
@@ -62,4 +63,18 @@ class Command(BaseCommand):
         """
         with open(file_path, 'w') as f:
             writer = csv.writer(f, lineterminator='\n')
-            writer.writerow(['サイト名', 'URL'])
+            writer.writerow(['順位', 'プレイヤー名', '段位', 'クリア', 'ランク',
+            'スコア', 'コンボ', 'B+P', 'PG', 'GR', 'GD', 'BD', 'PR', 'OP',
+            'OP', 'INPUT', '本体'])
+
+    @staticmethod
+    def export2csv(file_path: str, score_list: list):
+        """
+        CSV エクスポート
+        :param file_path:
+        :param score_list:
+        """
+        with codecs.open(file_path, 'a', 'shift-jis') as f:
+            writer = csv.writer(f, lineterminator='\n')
+            for score in score_list:
+                writer.writerow(score)
