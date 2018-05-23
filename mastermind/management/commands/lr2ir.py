@@ -11,7 +11,7 @@ class Command(BaseCommand):
         file_path = './csv/airgod.csv'
         #self.init_csv(file_path)
 
-        player_id_list = ['9829', '103345']
+        player_id_list = ['9829']
         players = 195
         pages = (players // 100) + 1
 
@@ -20,6 +20,7 @@ class Command(BaseCommand):
             print(f'Page: {i}')
             target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&page={i}&bmsid={bms_id}'
             score_list = self.scrape(target_url, player_id_list)
+            print(score_list)
 
     @staticmethod
     def scrape(url: str, player_id_list: list) -> list:
@@ -35,17 +36,21 @@ class Command(BaseCommand):
         table = soup.find_all('table')[3]
         rows = table.find_all('tr')
 
+        #指定プレイヤーIDのスコアデータ抽出
+        score_data = []
         for row in rows:
-            #プレイヤーIDの抽出
             id_cell = row.find(['a'])
             if id_cell:
                 player_id = id_cell.get('href').replace('search.cgi?mode=mypage&playerid=', '')
                 if player_id not in player_id_list:
                     continue
-            for cell in row.find_all(['td', 'th']):
-                print(cell.get_text())
+            for cell in row.find_all(['td', 'th'], attrs={'class': ''}):
+                if cell.get_text():
+                    score_data.append(cell.get_text())
 
-        score_list = []
+        #抽出したスコアデータを分割、整形
+        score_list = [score_data[i:i+19] for i in range(0, len(score_data), 19)]
+        score_list.pop(0)
 
         return score_list
 
