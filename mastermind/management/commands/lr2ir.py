@@ -9,19 +9,29 @@ class Command(BaseCommand):
     help = '楽曲ごとのプレイデータを取得、CSV出力'
 
     def handle(self, *args, **options):
-        file_path = './csv/airgod.csv'
-        self.init_csv(file_path)
+        bms_list_file_path = './csv/insane_bms_list.csv'
+        bms_list = []
+        with codecs.open(bms_list_file_path, 'r', 'cp932') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            for row in reader:
+                bms_list.append([row[3], row[5]])
 
         player_id_list = ['132784', '54253', '60153']
-        players = 1958
-        pages = (players // 100) + 1
-        bms_id = 97798
+        for bms_data in bms_list:
+            bms_id = int(bms_data[0])
+            players = int(bms_data[1])
+            print(f'BMSID: {bms_id}')
 
-        for i in range(1, pages + 1):
-            print(f'Page: {i}')
-            target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&page={i}&bmsid={bms_id}'
-            score_list = self.scrape(target_url, player_id_list)
-            self.export2csv(file_path, score_list)
+            file_path = f'./csv/{bms_id}.csv'
+            self.init_csv(file_path)
+
+            pages = (players // 100) + 1
+            for i in range(1, pages + 1):
+                print(f'Page: {i}')
+                target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&page={i}&bmsid={bms_id}'
+                score_list = self.scrape(target_url, player_id_list)
+                self.export2csv(file_path, score_list)
 
     @staticmethod
     def scrape(url: str, player_id_list: list) -> list:
