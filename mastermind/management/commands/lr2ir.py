@@ -23,7 +23,7 @@ class Command(BaseCommand):
             players = int(bms_data[1])
             print(f'BMSID: {bms_id}')
 
-            file_path = f'./csv/{bms_id}.csv'
+            file_path = f'./csv/score/{bms_id}.csv'
             self.init_csv(file_path)
 
             pages = (players // 100) + 1
