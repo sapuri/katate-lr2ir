@@ -17,7 +17,14 @@ class Command(BaseCommand):
             for row in reader:
                 bms_list.append([row[3], row[5]])
 
-        player_id_list = ['132784', '54253', '60153']
+        player_list_file_path = './csv/player_list.csv'
+        player_id_list = []
+        with codecs.open(player_list_file_path, 'r', 'cp932') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            for row in reader:
+                player_id_list.append(row[0])
+
         for bms_data in bms_list:
             bms_id = int(bms_data[0])
             players = int(bms_data[1])
