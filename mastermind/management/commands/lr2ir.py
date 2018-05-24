@@ -21,7 +21,6 @@ class Command(BaseCommand):
             print(f'Page: {i}')
             target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&page={i}&bmsid={bms_id}'
             score_list = self.scrape(target_url, player_id_list)
-            print(score_list)
             self.export2csv(file_path, score_list)
 
     @staticmethod
@@ -33,7 +32,7 @@ class Command(BaseCommand):
         :return: score list
         """
         resp = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-        soup = BeautifulSoup(resp.content, 'lxml')
+        soup = BeautifulSoup(resp.content.decode('cp932'), 'lxml')
 
         table = soup.find_all('table')[3]
         rows = table.find_all('tr')
@@ -49,9 +48,9 @@ class Command(BaseCommand):
             for cell in row.find_all(['td', 'th'], attrs={'class': ''}):
                 score_data.append(cell.get_text())
 
-        #抽出したスコアデータを分割、整形
+        #抽出したスコアデータを整形
+        del score_data[0:17]
         score_list = [score_data[i:i+17] for i in range(0, len(score_data), 17)]
-        score_list.pop(0)
 
         return score_list
 
@@ -74,7 +73,7 @@ class Command(BaseCommand):
         :param file_path:
         :param score_list:
         """
-        with codecs.open(file_path, 'a', 'shift-jis') as f:
+        with codecs.open(file_path, 'a', 'cp932') as f:
             writer = csv.writer(f, lineterminator='\n')
             for score in score_list:
                 writer.writerow(score)
