@@ -1,9 +1,10 @@
 import csv
 import codecs
-
 import requests
+
 from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
+from mastermind.models import Score
 
 class Command(BaseCommand):
     help = '楽曲ごとのプレイデータを取得、CSV出力'
@@ -39,6 +40,7 @@ class Command(BaseCommand):
                 target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&page={i}&bmsid={bms_id}'
                 score_list = self.scrape(target_url, player_id_list)
                 self.export2csv(file_path, score_list)
+                self.update_database(bms_id, score_list)
 
     @staticmethod
     def scrape(url: str, player_id_list: list) -> list:
@@ -94,3 +96,13 @@ class Command(BaseCommand):
             writer = csv.writer(f, lineterminator='\n')
             for score in score_list:
                 writer.writerow(score)
+
+    @staticmethod
+    def update_database(bms_id: str, score_list: list):
+        """
+        database 入力
+        :param score_list:
+        """
+        for score in score_list:
+            s = Score(bms_id=bms_id, player_name=score[1], score=score[5])
+            s.save()
