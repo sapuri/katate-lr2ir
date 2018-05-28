@@ -15,7 +15,7 @@ class Score(models.Model):
     PR = models.CharField('PR', max_length=8)
 
     def __str__(self):
-        return self.bms_id
+        return self.player_name
 
     class Meta:
         verbose_name = 'スコア'
