@@ -6,7 +6,6 @@ class Score(models.Model):
     clear_type = models.CharField('クリア状況', max_length=8)
     score_lank = models.CharField('スコアランク', max_length=8)
     score_rate = models.CharField('スコアレート', max_length=32)
-    score = models.IntegerField('スコア')
     combo = models.CharField('コンボ', max_length=16)
     BP = models.CharField('BP', max_length=8)
     PG = models.CharField('PG', max_length=8)
