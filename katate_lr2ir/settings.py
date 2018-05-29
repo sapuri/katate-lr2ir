@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mastermind.apps.MastermindConfig',  # Mastermind
-    'ranking',  # ranking
+    'ranking.apps.RankingConfig',  # Ranking
     'bootstrap4',  # django-bootstrap4
 ]
 
