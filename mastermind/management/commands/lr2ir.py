@@ -8,9 +8,12 @@ from django.core.management import BaseCommand
 from mastermind.models import Score
 
 class Command(BaseCommand):
-    help = '楽曲ごとのプレイデータを取得、CSV出力'
+    help = '楽曲ごとのプレイデータを取得、データベース登録'
 
     def handle(self, *args, **options):
+        #データベース初期化
+        self.init_database()
+
         bms_list_file_path = './csv/insane_bms_list.csv'
         bms_list = []
         with codecs.open(bms_list_file_path, 'r', 'cp932') as f:
@@ -32,15 +35,11 @@ class Command(BaseCommand):
             players = int(bms_data[1])
             print(f'BMSID: {bms_id}')
 
-            file_path = f'./csv/score/{bms_id}.csv'
-            self.init_csv(file_path)
-
             pages = (players // 100) + 1
             for i in range(1, pages + 1):
                 print(f'Page: {i}')
                 target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&page={i}&bmsid={bms_id}'
                 score_list = self.scrape(target_url, player_id_list)
-                self.export2csv(file_path, score_list)
                 self.update_database(bms_id, score_list)
 
     @staticmethod
@@ -76,35 +75,21 @@ class Command(BaseCommand):
         return score_list
 
     @staticmethod
-    def init_csv(file_path: str):
+    def init_database():
         """
-        CSV を初期化
-        :param file_path:
+        database 初期化
         """
-        with open(file_path, 'w') as f:
-            writer = csv.writer(f, lineterminator='\n')
-            writer.writerow(['順位', 'プレイヤー名', '段位', 'クリア', 'ランク',
-            'スコア', 'コンボ', 'B+P', 'PG', 'GR', 'GD', 'BD', 'PR', 'OP',
-            'OP', 'INPUT', '本体'])
-
-    @staticmethod
-    def export2csv(file_path: str, score_list: list):
-        """
-        CSV エクスポート
-        :param file_path:
-        :param score_list:
-        """
-        with codecs.open(file_path, 'a', 'cp932') as f:
-            writer = csv.writer(f, lineterminator='\n')
-            for score in score_list:
-                writer.writerow(score)
+        s = Score.objects.all()
+        s.delete()
 
     @staticmethod
     def update_database(bms_id: str, score_list: list):
         """
-        database 入力
+        database 登録
         :param score_list:
         """
         for score in score_list:
-            s = Score(bms_id=bms_id, player_name=score[1], score=score[5])
+            s = Score(bms_id=bms_id, player_name=score[1], clear_type=score[3],
+            score_lank=score[4], score=score[5], combo=score[6], bp=score[7],
+            pg=score[8], gr=score[9], gd=score[10], bd=score[11], pr=score[12])
             s.save()
