@@ -1,5 +1,6 @@
 import csv
 import codecs
+import time
 
 import requests
 from bs4 import BeautifulSoup
@@ -12,7 +13,7 @@ class Command(BaseCommand):
         file_path = './csv/insane_bms_list.csv'
         self.init_csv(file_path)
 
-        for i in range(1, 2):
+        for i in range(1, 26):
             print(f'Page: {i}')
             target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=search&type=insane&exlevel={i}&7keys=1'
             score_list = self.scrape(target_url)
@@ -25,6 +26,7 @@ class Command(BaseCommand):
         :param url:
         :return: bms list
         """
+        time.sleep(1)
         resp = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         soup = BeautifulSoup(resp.content.decode('cp932'), 'lxml')
 

@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'vw=u6lf)y&%3)#u0!#$0esg@a&fo8gakx6d$2&**q&_0%s5@x-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -74,12 +74,7 @@ WSGI_APPLICATION = 'katate_lr2ir.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# Load DATABASES from local_settings.py
 
 
 # Password validation
@@ -119,3 +114,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Load all local settings
+try:
+    from .local_settings import *
+except ImportError:
+    pass
