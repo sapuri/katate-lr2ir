@@ -2,13 +2,11 @@
 片手LR2IR
 
 ## Environment
-- 管理ツール
-    - Django 2.0.5
-    - Python 3.6.2
-    - postgreSQL
-- みるやつ
-    - 未定
-    - postgreSQL
+- Django 2.0.5
+- Python 3.6.2
+- postgreSQL
+- jQuery 3.3.1
+- bootstrap 4.1.1
 
 ### Django
 `DATABASES` は `local_settings.py` に書く。
