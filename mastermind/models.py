@@ -3,7 +3,7 @@ from django.db import models
 class Score(models.Model):
     bms_id = models.CharField('BMSID', max_length=8)
     player_name = models.CharField('プレイヤー名', max_length=16)
-    clear_type = models.CharField('クリア状況', max_length=8)
+    clear_type = models.CharField('クリア状況', max_length=16)
     score_lank = models.CharField('スコアランク', max_length=8)
     score = models.CharField('スコアレート', max_length=32)
     combo = models.CharField('コンボ', max_length=16)
