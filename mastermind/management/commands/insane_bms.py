@@ -8,7 +8,7 @@ from django.core.management import BaseCommand
 from mastermind.models import Bms
 
 class Command(BaseCommand):
-    help = '発狂BMSのリストを取得、CSV出力'
+    help = '発狂BMSのリストを取得'
 
     def handle(self, *args, **options):
         self.init_database()
@@ -31,7 +31,8 @@ class Command(BaseCommand):
         """
         time.sleep(1)
         resp = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-        soup = BeautifulSoup(resp.content.decode('cp932'), 'lxml')
+        content_type_encoding = resp.encoding if resp.encoding != 'ISO-8859-1' else None
+        soup = BeautifulSoup(resp.content, 'html.parser', from_encoding=content_type_encoding)
 
         table = soup.find_all('table')[0]
         rows = table.find_all('tr')
