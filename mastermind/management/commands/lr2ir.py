@@ -1,6 +1,7 @@
 import csv
 import codecs
 import requests
+import time
 
 from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
@@ -50,6 +51,7 @@ class Command(BaseCommand):
         :param player_id_list:
         :return: score list
         """
+        time.sleep(1)
         resp = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         soup = BeautifulSoup(resp.content.decode('cp932'), 'lxml')
 
