@@ -1,5 +1,20 @@
 from django.db import models
 
+class Bms(models.Model):
+    level = models.CharField('レベル', max_length=8)
+    genre = models.CharField('ジャンル', max_length=128)
+    title = models.CharField('タイトル', max_length=128)
+    bms_id = models.CharField('BMSID', max_length=8)
+    artist = models.CharField('アーティスト', max_length=128)
+    players = models.CharField('プレイ人数', max_length=8)
+
+    def __str__(self):
+        return self.bms_id
+
+    class Meta:
+        verbose_name = 'BMSデータ'
+        verbose_name_plural = 'BMSデータ'
+
 class Score(models.Model):
     bms_id = models.CharField('BMSID', max_length=8)
     player_name = models.CharField('プレイヤー名', max_length=16)

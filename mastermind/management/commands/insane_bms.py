@@ -1,23 +1,26 @@
 import csv
 import codecs
+import requests
 import time
 
-import requests
 from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
+from mastermind.models import Bms
 
 class Command(BaseCommand):
     help = '発狂BMSのリストを取得、CSV出力'
 
     def handle(self, *args, **options):
+        self.init_database()
         file_path = './csv/insane_bms_list.csv'
-        self.init_csv(file_path)
+        # self.init_csv(file_path)
 
         for i in range(1, 26):
             print(f'Page: {i}')
             target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=search&type=insane&exlevel={i}&7keys=1'
-            score_list = self.scrape(target_url)
-            self.export2csv(file_path, score_list)
+            bms_list = self.scrape(target_url)
+            # self.export2csv(file_path, bms_list)
+            self.update_database(bms_list)
 
     @staticmethod
     def scrape(url: str) -> list:
@@ -71,3 +74,22 @@ class Command(BaseCommand):
             writer = csv.writer(f, lineterminator='\n')
             for bms in bms_list:
                 writer.writerow(bms)
+
+    @staticmethod
+    def init_database():
+        """
+        database 初期化
+        """
+        b = Bms.objects.all()
+        b.delete()
+
+    @staticmethod
+    def update_database(bms_list: list):
+        """
+        database 登録
+        :param bms_list:
+        """
+        for bms in bms_list:
+            b = Bms(level=bms[0], genre=bms[1], title=bms[2],
+            bms_id=bms[3], artist=bms[4], players=bms[5])
+            b.save()
