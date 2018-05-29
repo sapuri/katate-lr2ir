@@ -52,7 +52,8 @@ class Command(BaseCommand):
         """
         time.sleep(1)
         resp = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-        soup = BeautifulSoup(resp.content.decode('cp932'), 'lxml')
+        content_type_encoding = resp.encoding if resp.encoding != 'ISO-8859-1' else None
+        soup = BeautifulSoup(resp.content, 'html.parser', from_encoding=content_type_encoding)
 
         table = soup.find_all('table')[3]
         rows = table.find_all('tr')
