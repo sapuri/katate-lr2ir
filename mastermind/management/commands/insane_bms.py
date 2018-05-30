@@ -1,4 +1,3 @@
-import csv
 import codecs
 import requests
 import time
@@ -8,18 +7,16 @@ from django.core.management import BaseCommand
 from mastermind.models import Bms
 
 class Command(BaseCommand):
-    help = '発狂BMSのリストを取得'
+    help = '発狂BMSのリストを取得、データベース登録'
 
     def handle(self, *args, **options):
         self.init_database()
-        file_path = './csv/insane_bms_list.csv'
-        # self.init_csv(file_path)
 
+        #BMSリストの取得
         for i in range(1, 26):
             print(f'Page: {i}')
             target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=search&type=insane&exlevel={i}&7keys=1'
             bms_list = self.scrape(target_url)
-            # self.export2csv(file_path, bms_list)
             self.update_database(bms_list)
 
     @staticmethod
@@ -52,29 +49,6 @@ class Command(BaseCommand):
         bms_list = [bms_list[i:i+9] for i in range(0, len(bms_list), 9)]
 
         return bms_list
-
-    @staticmethod
-    def init_csv(file_path: str):
-        """
-        CSV を初期化
-        :param file_path:
-        """
-        with open(file_path, 'w') as f:
-            writer = csv.writer(f, lineterminator='\n')
-            writer.writerow(['レベル', 'ジャンル', 'タイトル', 'BMSID',  'アーティスト',
-            'プレイ人数', 'クリア人数', 'プレイ回数', '平均プレイ回数'])
-
-    @staticmethod
-    def export2csv(file_path: str, bms_list: list):
-        """
-        CSV エクスポート
-        :param file_path:
-        :param bms_list:
-        """
-        with codecs.open(file_path, 'a', 'cp932') as f:
-            writer = csv.writer(f, lineterminator='\n')
-            for bms in bms_list:
-                writer.writerow(bms)
 
     @staticmethod
     def init_database():

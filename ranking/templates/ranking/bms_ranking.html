@@ -1,0 +1,43 @@
+{% extends "ranking/base.html" %}
+
+{% block content %}
+    {% for bms in bms_data %}
+      <h4 class="mt-4 border-bottom">{{ bms.title }}</h4>
+    {% endfor %}
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">順位</th>
+          <th scope="col">プレイヤー</th>
+          <th scope="col">クリア</th>
+          <th scope="col">ランク</th>
+          <th scope="col">スコア</th>
+          <th scope="col">コンボ</th>
+          <th scope="col">B+P</th>
+          <th scope="col">PG</th>
+          <th scope="col">GR</th>
+          <th scope="col">GD</th>
+          <th scope="col">BD</th>
+          <th scope="col">PR</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for score in score_list %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ score.player_name }}</td>
+          <td>{{ score.clear_type }}</td>
+          <td>{{ score.score_lank }}</td>
+          <td>{{ score.score }}</td>
+          <td>{{ score.combo }}</td>
+          <td>{{ score.bp }}</td>
+          <td>{{ score.pg }}</td>
+          <td>{{ score.gr }}</td>
+          <td>{{ score.gd }}</td>
+          <td>{{ score.bd }}</td>
+          <td>{{ score.pr }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock content %}
