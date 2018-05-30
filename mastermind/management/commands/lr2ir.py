@@ -1,35 +1,32 @@
-import csv
 import codecs
 import requests
 import time
 
 from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
+from mastermind.models import Player
+from mastermind.models import Bms
 from mastermind.models import Score
 
 class Command(BaseCommand):
-    help = '楽曲ごとのプレイデータを取得、データベース登録'
+    help = 'スコアデータを取得、データベース登録'
 
     def handle(self, *args, **options):
-        #データベース初期化
         self.init_database()
 
-        bms_list_file_path = './csv/insane_bms_list.csv'
+        #bms_list取得
         bms_list = []
-        with codecs.open(bms_list_file_path, 'r', 'cp932') as f:
-            reader = csv.reader(f)
-            header = next(reader)
-            for row in reader:
-                bms_list.append([row[3], row[5]])
+        b = Bms.objects.all()
+        for bms in b:
+            bms_list.append([bms.bms_id, bms.players])
 
-        player_list_file_path = './csv/player_list.csv'
+        #player_id_list取得
         player_id_list = []
-        with codecs.open(player_list_file_path, 'r', 'cp932') as f:
-            reader = csv.reader(f)
-            header = next(reader)
-            for row in reader:
-                player_id_list.append(row[0])
+        p = Player.objects.all()
+        for player in p:
+            player_id_list.append(player.player_id)
 
+        #スコアデータの取得
         for bms_data in bms_list:
             bms_id = int(bms_data[0])
             players = int(bms_data[1])
