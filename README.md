@@ -5,12 +5,12 @@
 - 管理サイト
   - Django 2.0.5
   - Python 3.6.2
-  - postgreSQL, mariaDB
+  - postgreSQL, MariaDB
 
 - ランキングページ
   - Django 2.0.5
   - Python 3.6.2
-  - postgreSQL, mariaDB
+  - postgreSQL, MariaDB
   - jQuery 3.3.1
   - bootstrap 4.1.1
 
