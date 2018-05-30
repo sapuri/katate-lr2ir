@@ -1,17 +1,11 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
+from mastermind.models import Player
+from mastermind.models import Bms
 from mastermind.models import Score
 
-def index(request):
-    score_list = Score.objects.order_by('bms_id')[:5]
-    context = {
-        'score_list': score_list,
-    }
-    return render(request, 'ranking/index.html', context)
-
 def bms_ranking(request, bms_id):
-    score_list = Score.objects.order_by('bms_id')[:5]
-    context = {
-        'score_list': score_list,
-    }
-    return render(request, 'ranking/index.html', context)
+    b = Bms.objects.filter(bms_id__contains=bms_id)
+    s = Score.objects.filter(bms_id__contains=bms_id)
+    return render(request, 'ranking/bms_ranking.html', {'bms_data': b, 'score_list': s})
