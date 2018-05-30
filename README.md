@@ -12,12 +12,12 @@
 `DATABASES` は `local_settings.py` に書く。
 
 ## Commands
-発狂難易度表のBMSを抽出（ほぼできた）
+発狂難易度表のBMSを抽出、データベースに登録（できた）
 ```
 python manage.py insane_bms
 ```
 
-LR2IRからスコアデータを収集、データベースに登録（作成中）
+LR2IRからスコアデータを収集、データベースに登録（できた）
 ```
 python manage.py lr2ir
 ```
