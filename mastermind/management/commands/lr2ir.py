@@ -88,6 +88,6 @@ class Command(BaseCommand):
         """
         for score in score_list:
             s = Score(bms_id=bms_id, player_name=score[1], clear_type=score[3],
-            score_lank=score[4], score=score[5], combo=score[6], bp=score[7],
+            score_rank=score[4], score=score[5], combo=score[6], bp=score[7],
             pg=score[8], gr=score[9], gd=score[10], bd=score[11], pr=score[12])
             s.save()
