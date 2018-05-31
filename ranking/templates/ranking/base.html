@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="{% static 'ranking/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'ranking/css/style.css' %}">
 {% block extra_css %}{% endblock %}
 <title>{% block title %}LR2 katate IR{% endblock %}</title>
 </head>
@@ -15,7 +16,15 @@
     {% endblock %}
   </div>
 <script src="{% static 'ranking/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'ranking/js/jquery.tablesorter.min.js' %}"></script>
 <script src="{% static 'ranking/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+$(document).ready(function()
+    {
+        $("#sort").tablesorter();
+    }
+);
+</script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>
