@@ -1,8 +1,9 @@
 # katate-lr2ir
 片手LR2IR
-```
-LR2IR - http://www.dream-pro.info/~lavalse/LR2IR/search.cgi
-```
+
+LR2IR - `http://www.dream-pro.info/~lavalse/LR2IR/search.cgi`
+
+
 から、片手プレイヤーのスコアデータを抽出します。
 
 ## Environment
