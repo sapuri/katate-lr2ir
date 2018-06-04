@@ -1,0 +1,25 @@
+{% extends "ranking/base.html" %}
+
+{% block content %}
+    <h4 class="mt-4 border-bottom">Players</h4>
+    <table id="sorter" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">ID</th>
+          <th scope="col">LR2IR</th>
+          <th scope="col">Stairway</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player in player_list %}
+        <tr>
+          <th>{{ player.name }}</th>
+          <th>{{ player.player_id }}</th>
+          <th><a href="http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=mypage&playerid={{player.player_id}}" target="_blank">▲</a></th>
+          <th><a href="http://stairway.sakura.ne.jp/bms/LunaticRave2/?contents=player&page={{player.player_id}}" target="_blank">▲</a></th>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock content %}

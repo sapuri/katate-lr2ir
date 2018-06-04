@@ -7,4 +7,5 @@ urlpatterns = [
     path('ranking/', views.bms_list, name='bms_list'),
     path('ranking/level/<str:level>/', views.bms_list, name='bms_list'),
     path('ranking/<str:bms_id>/', views.bms_ranking, name='bms_ranking'),
+    path('players/', views.players, name='players'),
 ]
