@@ -18,10 +18,26 @@
 <script src="{% static 'tablesorter/dist/js/jquery.tablesorter.min.js' %}"></script>
 <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
 <script>
+$.tablesorter.addParser({
+    id: 'clear',
+    is: function(s) {
+        return false;
+    },
+    format: function(s) {
+        return s.replace(/FULLCOMBO/,4).replace(/HARD/,3).replace(/CLEAR/,2).replace(/EASY/,1).replace(/FAILED/,0);
+    },
+    type: 'numeric'
+});
 $(document).ready(function()
-    {
-        $("#sorter").tablesorter();
-    }
+  {
+    $("#sorter").tablesorter({
+      headers: {
+        2: {
+          sorter:'clear'
+        }
+      }
+    });
+  }
 );
 </script>
 {% block extra_js %}{% endblock %}
