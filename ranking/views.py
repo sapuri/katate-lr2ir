@@ -5,8 +5,8 @@ from mastermind.models import Player
 from mastermind.models import Bms
 from mastermind.models import Score
 
-def bms_list(request):
-    b = Bms.objects.all()
+def bms_list(request, level='1'):
+    b = Bms.objects.filter(level__contains=level)
     return render(request, 'ranking/bms_list.html', {'bms_list': b})
 
 def bms_ranking(request, bms_id):
