@@ -14,7 +14,7 @@ LR2IR - `http://www.dream-pro.info/~lavalse/LR2IR/search.cgi`
   - bootstrap 4.1.1
 
 ### Django
-`DATABASES` は `local_settings.py` に書く。
+`DATABASES` は `local_settings.py` に書く
 
 ## Commands
 発狂難易度表のBMSを抽出、データベースに登録
