@@ -5,6 +5,8 @@ from mastermind.models import Player
 from mastermind.models import Bms
 from mastermind.models import Score
 
+from .forms import PlayerDataForm
+
 def bms_list(request, level='1'):
     b = Bms.objects.filter(level=level)
     return render(request, 'ranking/bms_list.html', {'bms_list': b})
@@ -17,3 +19,15 @@ def bms_ranking(request, bms_id):
 def players(request):
     p = Player.objects.all()
     return render(request, 'ranking/players.html', {'player_list': p})
+
+def add_player(request):
+    if request.method == 'GET':
+        form = PlayerDataForm()
+        return render(request, 'ranking/add_player.html', {'form': form})
+
+    else:
+        form = PlayerDataForm(request.POST)
+        if form.is_valid():
+            return render(request, 'ranking/add_player.html', {'form': form})
+        else:
+            return render(request, 'ranking/add_player.html', {'form': form})
