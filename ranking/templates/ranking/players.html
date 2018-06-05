@@ -22,5 +22,10 @@
         {% endfor %}
       </tbody>
     </table>
-    <a class="btn btn-primary" href="/players/add/" role="button">プレイヤー追加</a>
+    <h4 class="mt-4 border-bottom">プレイヤー追加</h4>
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form }}
+      <input type=submit class="btn btn-primary" value="追加">
+    </form>
 {% endblock content %}

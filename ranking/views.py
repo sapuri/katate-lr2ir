@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.http import HttpResponse
 
 from mastermind.models import Player
@@ -17,17 +18,9 @@ def bms_ranking(request, bms_id):
     return render(request, 'ranking/bms_ranking.html', {'bms_data': b, 'score_list': s})
 
 def players(request):
+    form  = PlayerDataForm(request.POST or None)
+    if form.is_valid():
+        Player.objects.create(**form.cleaned_data)
+        return redirect('ranking:players')
     p = Player.objects.all()
-    return render(request, 'ranking/players.html', {'player_list': p})
-
-def add_player(request):
-    if request.method == 'GET':
-        form = PlayerDataForm()
-        return render(request, 'ranking/add_player.html', {'form': form})
-
-    else:
-        form = PlayerDataForm(request.POST)
-        if form.is_valid():
-            return render(request, 'ranking/add_player.html', {'form': form})
-        else:
-            return render(request, 'ranking/add_player.html', {'form': form})
+    return render(request, 'ranking/players.html', {'player_list': p, 'form': form})
