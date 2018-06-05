@@ -2,14 +2,14 @@ from django.db import models
 
 class Player(models.Model):
     player_id = models.CharField('プレイヤーID', max_length=8)
-    name = models.CharField('プレイヤー名', max_length=32)
+    name = models.CharField('名前', max_length=32)
 
     def __str__(self):
         return self.player_id
 
     class Meta:
-        verbose_name = 'プレイヤー'
-        verbose_name_plural = 'プレイヤー'
+        verbose_name = 'Player'
+        verbose_name_plural = 'Player'
 
 class Bms(models.Model):
     level = models.CharField('レベル', max_length=8)
@@ -44,5 +44,5 @@ class Score(models.Model):
         return self.bms_id
 
     class Meta:
-        verbose_name = 'スコア'
-        verbose_name_plural = 'スコア'
+        verbose_name = 'Score'
+        verbose_name_plural = 'Score'
