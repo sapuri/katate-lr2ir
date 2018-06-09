@@ -32,7 +32,7 @@ class Command(BaseCommand):
             players = int(bms_data[1])
             print(f'BMSID: {bms_id}')
 
-            pages = (players // 100) + 1
+            pages = -(-players // 100)
             for i in range(1, pages + 1):
                 print(f'Page: {i}')
                 target_url = f'http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&page={i}&bmsid={bms_id}'
